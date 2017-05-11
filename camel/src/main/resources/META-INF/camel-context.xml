@@ -1,0 +1,26 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	<camelContext xmlns="http://camel.apache.org/schema/spring"
+		id="camel">
+		<package>com.riaz</package>
+	</camelContext>
+	<!-- lets configure the default ActiveMQ broker URL -->
+	<!-- <bean id="jms" class="org.apache.camel.component.jms.JmsComponent"> -->
+	<!-- <property name="connectionFactory"> -->
+	<!-- <bean class="org.apache.activemq.ActiveMQConnectionFactory"> -->
+	<!-- <property name="brokerURL" -->
+	<!-- value="vm://localhost?broker.persistent=false&broker.useJmx=true" /> -->
+	<!-- </bean> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+	
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL"
+					value="vm://localhost?broker.persistent=false&amp;broker.useJmx=false" />
+			</bean>
+		</property>
+	</bean>
+</beans>

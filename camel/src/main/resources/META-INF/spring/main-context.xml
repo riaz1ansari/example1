@@ -1,0 +1,49 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring-2.9.2.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://cxf.apache.org/jaxrs
+	   http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.riaz"></context:component-scan>
+
+	<bean id="myPropertiesConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="false" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<value>file:${prop_path}/app.properties</value>
+			</list>
+		</property>
+		<property name="systemPropertiesModeName">
+			<value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value>
+		</property>
+		<property name="placeholderPrefix" value="$prop{" />
+	</bean>
+
+	<camel:camelContext id="my-server">
+		<camel:packageScan>
+			<camel:package>com.riaz</camel:package>
+		</camel:packageScan>
+	</camel:camelContext>
+
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="brokerURL" value="tcp://localhost:61616?jms.useAsyncSend=true" />
+	</bean>
+
+	<jaxrs:server id="testAPI" address="http://127.0.0.1:8981/v1">
+		<jaxrs:serviceBeans>
+			<bean class="com.riaz.service.Service1" />
+		</jaxrs:serviceBeans>
+
+	</jaxrs:server>
+
+</beans>
